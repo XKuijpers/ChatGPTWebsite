@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1d1d1d;
+            /* Dark background color */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #333;
+            /* Darker background color */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            /* Adjusted width to fit the form */
+        }
+
+        .todo-header {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #ff9800;
+            /* Orange text color */
+        }
+
+        .todo-list {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .todo-item {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .todo-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .todo-item .delete-button {
+            margin-left: auto;
+            background-color: #f44336;
+            /* Red button background color */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .todo-item .delete-button:hover {
+            background-color: #d32f2f;
+            /* Darker red on hover */
+        }
+
+        .add-task {
+            width: calc(100% - 20px);
+            /* Adjusted width to account for padding */
+            padding: 10px;
+            margin: 0 auto;
+            /* Center the button */
+            background-color: #ff9800;
+            /* Orange button background color */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-task:hover {
+            background-color: #f57c00;
+            /* Darker orange on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="todo-header">Todo List</h2>
+        <p id="welcome-message" style="margin-bottom: 20px;"></p>
+        <div class="todo-list" id="todo-list">
+            <!-- Todo items will be dynamically added here -->
+        </div>
+        <button id="add-task" class="add-task">Add Task</button>
+    </div>
+
+    <script>
+        // Retrieve username from URL
+        var urlParams = new URLSearchParams(window.location.search);
+        var username = urlParams.get('username');
+
+        // Display welcome message with username
+        document.getElementById("welcome-message").innerText = "Welcome, " + username + "!";
+
+        // Function to add a new todo item
+        function addTodoItem(text, checked) {
+            var todoList = document.getElementById("todo-list");
+            var todoItem = document.createElement("div");
+            todoItem.classList.add("todo-item");
+            todoItem.innerHTML = `
+                <input type="checkbox" ${checked ? "checked" : ""}>
+                <span>${text}</span>
+                <button class="delete-button">Delete</button>
+            `;
+            todoList.appendChild(todoItem);
+        }
+
+        // Function to save tasks to localStorage
+        function saveTasks() {
+            var todoItems = document.querySelectorAll(".todo-item");
+            var tasks = [];
+            todoItems.forEach(function (item) {
+                var text = item.querySelector("span").innerText;
+                var checked = item.querySelector("input[type='checkbox']").checked;
+                tasks.push({ text: text, checked: checked });
+            });
+            localStorage.setItem(username + "-tasks", JSON.stringify(tasks));
+        }
+
+        // Function to load tasks from localStorage
+        function loadTasks() {
+            var storedTasks = localStorage.getItem(username + "-tasks");
+            if (storedTasks) {
+                var tasks = JSON.parse(storedTasks);
+                tasks.forEach(function (task) {
+                    addTodoItem(task.text, task.checked);
+                });
+            }
+        }
+
+        // Example: Load tasks when the page is loaded
+        loadTasks();
+
+        // Event listener for adding a new task
+        document.getElementById("add-task").addEventListener("click", function () {
+            var newTask = prompt("Enter a new task:");
+            if (newTask) {
+                addTodoItem(newTask, false);
+                saveTasks();
+            }
+        });
+
+        // Event listener for toggling task completion
+        document.addEventListener("change", function (event) {
+            if (event.target && event.target.type === "checkbox") {
+                saveTasks();
+            }
+        });
+
+        // Event delegation for deleting a task
+        document.addEventListener("click", function (event) {
+            if (event.target && event.target.classList.contains("delete-button")) {
+                var todoItem = event.target.closest(".todo-item");
+                todoItem.remove();
+                saveTasks();
+            }
+        });
+    </script>
+</body>
+
+</html>

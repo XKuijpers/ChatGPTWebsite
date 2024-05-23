@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1d1d1d;
+            /* Dark background color */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #333;
+            /* Darker background color */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            /* Adjusted width to fit the form */
+        }
+
+        .login-header {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #ff9800;
+            /* Orange text color */
+        }
+
+        .input-field {
+            width: calc(100% - 20px);
+            /* Adjusted width to account for padding */
+            padding: 10px;
+            margin: 0 auto 10px;
+            /* Center the input field */
+            border: 1px solid #666;
+            /* Darker border color */
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #444;
+            /* Darker input background color */
+            color: #fff;
+        }
+
+        .login-button,
+        .register-button {
+            width: 100%;
+            /* Adjusted width to fit the form */
+            padding: 10px;
+            background-color: #ff9800;
+            /* Orange button background color */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+            /* Add margin between buttons */
+        }
+
+        .login-button:hover,
+        .register-button:hover {
+            background-color: #f57c00;
+            /* Darker orange on hover */
+        }
+
+        .login-error {
+            color: #ff4444;
+            /* Red error message color */
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="login-header">Login</h2>
+        <form id="login-form">
+            <input type="text" id="username" class="input-field" placeholder="Username">
+            <input type="password" id="password" class="input-field" placeholder="Password">
+            <button type="submit" class="login-button">Login</button>
+        </form>
+        <p id="login-error" class="login-error" style="display: none;">Incorrect username or password. Please try again.
+        </p>
+        <button id="register-button" class="register-button">Register</button>
+    </div>
+
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get username and password
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            // Check if the username and password are correct
+            var storedPassword = localStorage.getItem(username);
+            if (storedPassword && storedPassword === password) {
+                // Store username in sessionStorage
+                sessionStorage.setItem("username", username);
+                // Redirect to todo.html with username in URL
+                window.location.href = "todo.html?username=" + username;
+            } else {
+                // Show error message if username or password is incorrect
+                document.getElementById("login-error").style.display = "block";
+            }
+        });
+
+        // Redirect to registration page when Register button is clicked
+        document.getElementById("register-button").addEventListener("click", function () {
+            window.location.href = "register.html";
+        });
+    </script>
+
+</body>
+
+</html>

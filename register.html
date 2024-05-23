@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1d1d1d;
+            /* Dark background color */
+            color: #fff;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: #333;
+            /* Darker background color */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            /* Adjusted width to fit the form */
+        }
+
+        .register-header {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #ff9800;
+            /* Orange text color */
+        }
+
+        .input-field {
+            display: block;
+            width: calc(100% - 20px);
+            /* Adjusted width to account for padding */
+            padding: 10px;
+            margin: 0 auto 10px;
+            /* Center the input field */
+            border: 1px solid #666;
+            /* Darker border color */
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #444;
+            /* Darker input background color */
+            color: #fff;
+        }
+
+        .register-button {
+            display: block;
+            width: calc(100% - 20px);
+            /* Adjusted width to account for padding */
+            padding: 10px;
+            margin: 0 auto;
+            /* Center the button */
+            background-color: #ff9800;
+            /* Orange button background color */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .register-button:hover {
+            background-color: #f57c00;
+            /* Darker orange on hover */
+        }
+
+        .register-error {
+            color: #ff4444;
+            /* Red error message color */
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="register-header">Register</h2>
+        <form id="register-form">
+            <input type="text" id="username" class="input-field" placeholder="Username">
+            <input type="password" id="password" class="input-field" placeholder="Password">
+            <button type="submit" class="register-button">Register</button>
+        </form>
+        <p id="register-error" class="register-error" style="display: none;">Username already exists. Please choose a
+            different username.</p>
+    </div>
+
+    <script>
+        document.getElementById("register-form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Get username and password
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            // Check if username already exists
+            if (localStorage.getItem(username) !== null) {
+                // Show error message if username already exists
+                document.getElementById("register-error").style.display = "block";
+            } else {
+                // Store username and password in localStorage
+                localStorage.setItem(username, password);
+                // Redirect to login page
+                window.location.href = "index.html";
+            }
+        });
+    </script>
+</body>
+
+</html>
