@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             background-color: #1d1d1d;
-            /* Dark background color */
+            background: linear-gradient(135deg, #1d1d1d 25%, #2e2e2e 100%);
             color: #fff;
             display: flex;
             justify-content: center;
@@ -22,61 +22,73 @@
         .container {
             text-align: center;
             background-color: #333;
-            /* Darker background color */
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border: 1px solid #444;
             width: 300px;
-            /* Adjusted width to fit the form */
+            position: relative;
+        }
+
+        .container:before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            z-index: -1;
+            border-radius: 10px;
+            filter: blur(20px);
         }
 
         .login-header {
             margin-bottom: 20px;
             font-size: 24px;
             color: #ff9800;
-            /* Orange text color */
         }
 
         .input-field {
             width: calc(100% - 20px);
-            /* Adjusted width to account for padding */
             padding: 10px;
             margin: 0 auto 10px;
-            /* Center the input field */
             border: 1px solid #666;
-            /* Darker border color */
             border-radius: 4px;
             box-sizing: border-box;
             background-color: #444;
-            /* Darker input background color */
             color: #fff;
         }
 
-        .login-button,
-        .register-button {
-            width: 100%;
-            /* Adjusted width to fit the form */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button {
+            flex: 1;
+            margin: 5px;
             padding: 10px;
             background-color: #ff9800;
-            /* Orange button background color */
             color: #fff;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-bottom: 10px;
-            /* Add margin between buttons */
+            text-align: center;
+            text-decoration: none;
+            font-weight: normal;
+            font-size: 16px;
+            /* Explicitly set the font size */
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .login-button:hover,
-        .register-button:hover {
+        .button:hover {
             background-color: #f57c00;
-            /* Darker orange on hover */
+            transform: scale(1.05);
         }
 
         .login-error {
             color: #ff4444;
-            /* Red error message color */
             margin-top: 10px;
         }
     </style>
@@ -88,40 +100,29 @@
         <form id="login-form">
             <input type="text" id="username" class="input-field" placeholder="Username">
             <input type="password" id="password" class="input-field" placeholder="Password">
-            <button type="submit" class="login-button">Login</button>
+            <div class="button-group">
+                <button type="submit" class="button">Login</button>
+                <a href="register.html" class="button">Register</a>
+            </div>
         </form>
         <p id="login-error" class="login-error" style="display: none;">Incorrect username or password. Please try again.
         </p>
-        <button id="register-button" class="register-button">Register</button>
     </div>
 
     <script>
         document.getElementById("login-form").addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent form submission
-
-            // Get username and password
+            event.preventDefault();
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
-
-            // Check if the username and password are correct
             var storedPassword = localStorage.getItem(username);
             if (storedPassword && storedPassword === password) {
-                // Store username in sessionStorage
                 sessionStorage.setItem("username", username);
-                // Redirect to todo.html with username in URL
                 window.location.href = "todo.html?username=" + username;
             } else {
-                // Show error message if username or password is incorrect
                 document.getElementById("login-error").style.display = "block";
             }
         });
-
-        // Redirect to registration page when Register button is clicked
-        document.getElementById("register-button").addEventListener("click", function () {
-            window.location.href = "register.html";
-        });
     </script>
-
 </body>
 
 </html>
